@@ -5,6 +5,7 @@ import 'package:flutter_app/Basic_elements/song.dart';
 import 'package:flutter_app/Basic_elements/album.dart';
 import 'package:flutter_app/Basic_elements/artist.dart';
 import 'Basic_elements/genre.dart';
+import 'Basic_elements/playlist.dart';
 
 typedef void TimeHandler(Duration duration);
 typedef void ErrorHandler(String message);
@@ -168,6 +169,76 @@ class AudioExtractor {
     }).toList();
 
     completer.complete(allGenres);
+    return completer.future;
+  }
+
+  static Future<dynamic> allPlaylists() async{
+    var completer = new Completer();
+
+    List<dynamic> playlists = await _channel.invokeMethod('getPlaylists');
+    print(playlists.runtimeType);
+
+    var allPlaylists = playlists.map((m) {
+      return new Playlist.fromMap(m);
+    }).toList();
+
+    completer.complete(allPlaylists);
+    return completer.future;
+  }
+
+  static Future<dynamic> getSongsFromAlbum( int id) async{
+    var completer = new Completer();
+
+    List<dynamic> songs = await _channel.invokeMethod('getSongsfromAlbum',{"id":id});
+    print(songs.runtimeType);
+
+    var Songs = songs.map((m) {
+      return new Song.fromMap(m);
+    }).toList();
+
+    completer.complete(Songs);
+    return completer.future;
+  }
+
+  static Future<dynamic> getSongsFromArtist( int id) async{
+    var completer = new Completer();
+
+    List<dynamic> songs = await _channel.invokeMethod('getSongsfromArtist',{"id":id});
+    print(songs.runtimeType);
+
+    var Songs = songs.map((m) {
+      return new Song.fromMap(m);
+    }).toList();
+
+    completer.complete(Songs);
+    return completer.future;
+  }
+
+  static Future<dynamic> getSongsFromGenre( int id) async{
+    var completer = new Completer();
+
+    List<dynamic> songs = await _channel.invokeMethod('getSongsfromGenre',{"id":id});
+    print(songs.runtimeType);
+
+    var Songs = songs.map((m) {
+      return new Song.fromMap(m);
+    }).toList();
+
+    completer.complete(Songs);
+    return completer.future;
+  }
+
+  static Future<dynamic> getSongsFromPlaylist( int id) async{
+    var completer = new Completer();
+
+    List<dynamic> songs = await _channel.invokeMethod('getSongsfromPlaylist',{"id":id});
+    print(songs.runtimeType);
+
+    var Songs = songs.map((m) {
+      return new Song.fromMap(m);
+    }).toList();
+
+    completer.complete(Songs);
     return completer.future;
   }
 }

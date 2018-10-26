@@ -99,8 +99,7 @@ public class Song
         String[] selArg = new String[]{"" + mId};
 
         Cursor songCursor = contentResolver.query(contentUri, projection, selection, selArg, null);
-
-        if (songCursor.getCount() >= 0) {
+        if (songCursor.getCount() > 0) {
             songCursor.moveToPosition(0);
             mUri = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.DATA));
         }

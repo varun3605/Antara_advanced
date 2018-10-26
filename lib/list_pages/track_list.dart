@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'song_data.dart';
+import 'package:flutter_app/Data_handlers/song_data.dart';
 
 SongData songData;
 
 class TracksList extends StatefulWidget {
-  TracksList(@required SongData songDetail) {
+  TracksList(SongData songDetail) {
     songData = songDetail;
   }
 

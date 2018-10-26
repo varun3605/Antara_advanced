@@ -1,5 +1,5 @@
 import 'package:flutter_app/Basic_elements/song.dart';
-import 'audioPlayer.dart';
+import 'package:flutter_app/audioPlayer.dart';
 
 class SongData {
   List<Song> list_song;

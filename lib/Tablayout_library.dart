@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'album_list.dart';
-import 'artist_list.dart';
-import 'genre_list.dart';
-import 'playlist_list.dart';
-import 'track_list.dart';
-import 'song_data.dart';
-import 'album_data.dart';
-import 'artist_data.dart';
-import 'genre_data.dart';
+import 'package:flutter_app/list_pages/album_list.dart';
+import 'package:flutter_app/list_pages/artist_list.dart';
+import 'package:flutter_app/list_pages/genre_list.dart';
+import 'package:flutter_app/list_pages/playlist_list.dart';
+import 'package:flutter_app/list_pages/track_list.dart';
+import 'package:flutter_app/Data_handlers/song_data.dart';
+import 'package:flutter_app/Data_handlers/album_data.dart';
+import 'package:flutter_app/Data_handlers/artist_data.dart';
+import 'package:flutter_app/Data_handlers/genre_data.dart';
+import 'Data_handlers/playlist_data.dart';
 import 'audioPlayer.dart';
 
 
-var songs;
-var albums, artists, genres;
+var songs, albums, artists, genres, playlists;
 SongData songData;
 AlbumData albumData;
 ArtistData artistData;
 GenreData genreData;
+PlaylistData playlistData;
 bool isLoading;
 
 class TabPage extends StatefulWidget {
@@ -61,7 +62,7 @@ class _TabPageState extends State<TabPage> {
             new TracksList(songData),
             new AlbumsList(albumData),
             new ArtistList(artistData),
-            new PlayList_List(),
+            new PlayList_List(playlistData),
             new GenreList(genreData)
           ],
         ),
@@ -74,10 +75,12 @@ class _TabPageState extends State<TabPage> {
     albums = await AudioExtractor.allAlbums();
     artists = await AudioExtractor.allArtists();
     genres = await AudioExtractor.allGenres();
+    playlists = await AudioExtractor.allPlaylists();
     print(songs);
     print(albums);
     print(artists);
     print(genres);
+    print(playlists);
     if(!mounted)
         return;
 
@@ -86,6 +89,7 @@ class _TabPageState extends State<TabPage> {
           albumData = new AlbumData(albums);
           artistData = new ArtistData(artists);
           genreData = new GenreData(genres);
+          playlistData = new PlaylistData(playlists);
           isLoading = false;
         });
   }

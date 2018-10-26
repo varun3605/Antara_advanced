@@ -1,7 +1,5 @@
 package com.hvr.flutterapp;
 
-import android.provider.MediaStore;
-
 import java.util.HashMap;
 
 public class Genre

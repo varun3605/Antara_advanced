@@ -1,5 +1,5 @@
-import 'Basic_elements/genre.dart';
-import 'audioPlayer.dart';
+import 'package:flutter_app/Basic_elements/genre.dart';
+import 'package:flutter_app/audioPlayer.dart';
 
 class GenreData
 {

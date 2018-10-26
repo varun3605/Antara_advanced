@@ -28,7 +28,7 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
     private MethodChannel mMethodChannel;
     private Result mResult;
     private int prev_stat;
-    int i;
+    int i, id;
 
     private static AudioManager sAudioManager;
 
@@ -63,6 +63,25 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
           case "getGenres":
               result.success(getGenreData());
               break;
+          case "getPlaylists":
+              result.success(getPlaylistData());
+              break;
+          case "getSongsfromAlbum":
+              id = methodCall.argument("id");
+              result.success(getSongDatafromAlbum(id));
+              break;
+          case "getSongsfromArtist":
+              id = methodCall.argument("id");
+              result.success(getSongDatafromArtist(id));
+              break;
+          case "getSongsfromGenre":
+              id = methodCall.argument("id");
+              result.success(getSongDatafromGenre(id));
+              break;
+          case "getSongsfromPlaylist":
+          id = methodCall.argument("id");
+          result.success(getSongDatafromPlaylist(id));
+          break;
           case "request_permissions":
               i=0;
               mResult = result;
@@ -141,6 +160,73 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
         return genreHashMaps;
     }
 
+    ArrayList<HashMap> getPlaylistData()
+    {
+        AudioFinder audioFinder = new AudioFinder(getContentResolver());
+        audioFinder.findPlaylists();
+        List<Playlist> playListList = audioFinder.getPlayListList();
+        System.out.print(playListList);
+        ArrayList<HashMap> playListHashMaps = new ArrayList<>();
+        for(Playlist playlist: playListList)
+        {
+            playListHashMaps.add(playlist.toMap());
+        }
+
+        return playListHashMaps;
+    }
+
+    ArrayList<HashMap> getSongDatafromAlbum(int album_id)
+    {
+        AudioFinder audioFinder = new AudioFinder(getContentResolver());
+        audioFinder.findSongsfromAlbum(album_id);
+        List<Song> songList = audioFinder.getSongList();
+        System.out.print(songList);
+        ArrayList<HashMap> songHashMaps = new ArrayList<>();
+        for (Song song : songList) {
+            songHashMaps.add(song.toMap());
+        }
+        return songHashMaps;
+    }
+
+    ArrayList<HashMap> getSongDatafromArtist(int artist_id)
+    {
+        AudioFinder audioFinder = new AudioFinder(getContentResolver());
+        audioFinder.findSongsfromArtist(artist_id);
+        List<Song> songList = audioFinder.getSongList();
+        System.out.print(songList);
+        ArrayList<HashMap> songHashMaps = new ArrayList<>();
+        for (Song song : songList) {
+            songHashMaps.add(song.toMap());
+        }
+        return songHashMaps;
+    }
+
+    ArrayList<HashMap> getSongDatafromGenre(int genre_id)
+    {
+        AudioFinder audioFinder = new AudioFinder(getContentResolver());
+        audioFinder.findSongsfromGenre(genre_id);
+        List<Song> songList = audioFinder.getSongList();
+        System.out.print(songList);
+        ArrayList<HashMap> songHashMaps = new ArrayList<>();
+        for (Song song : songList) {
+            songHashMaps.add(song.toMap());
+        }
+        return songHashMaps;
+    }
+
+    ArrayList<HashMap> getSongDatafromPlaylist(int playlist_id)
+    {
+        AudioFinder audioFinder = new AudioFinder(getContentResolver());
+        audioFinder.findSongsfromPlaylist(playlist_id);
+        List<Song> songList = audioFinder.getSongList();
+        System.out.print(songList);
+        ArrayList<HashMap> songHashMaps = new ArrayList<>();
+        for (Song song : songList) {
+            songHashMaps.add(song.toMap());
+        }
+        return songHashMaps;
+    }
+
     @TargetApi(Build.VERSION_CODES.M)
     void chkPermission()
     {
@@ -158,6 +244,7 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
                 mResult.success("PERMISSION_GRANTED");
         }
     }
+
 
     void rqstPermissions()
     {

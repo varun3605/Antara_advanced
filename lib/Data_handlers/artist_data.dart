@@ -1,5 +1,5 @@
-import 'audioPlayer.dart';
-import 'Basic_elements/artist.dart';
+import 'package:flutter_app/audioPlayer.dart';
+import 'package:flutter_app/Basic_elements/artist.dart';
 
 class ArtistData
 {

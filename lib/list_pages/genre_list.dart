@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'genre_data.dart';
+import 'package:flutter_app/Data_handlers/genre_data.dart';
+import 'package:flutter_app/intermediate_pages/genre_page.dart';
 
 GenreData genreData;
 
 class GenreList extends StatefulWidget {
-  GenreList(GenreData genreDetail)
-  {
+  GenreList(GenreData genreDetail) {
     genreData = genreDetail;
   }
   @override
@@ -26,6 +26,11 @@ class _GenreState extends State<GenreList> {
         print(g);
         return new ListTile(
           title: new Text(g.title),
+          onTap: () {
+            Navigator.push(context, new MaterialPageRoute(builder: (context) {
+              return new GenrePage(g.id, g.title);
+            }));
+          },
         );
       },
     );
