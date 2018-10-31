@@ -6,14 +6,11 @@ public class Artist
 {
     long mId;
     String mTitle;
-    int mNoOfAlbums;
-    int mNoOfTracks;
 
-    public Artist(long id, String title, int noOfAlbums, int noOfTracks) {
+    public Artist(long id, String title) {
         mId = id;
         mTitle = title;
-        mNoOfAlbums = noOfAlbums;
-        mNoOfTracks = noOfTracks;
+
     }
 
     HashMap<String, Object> toMap()
@@ -21,8 +18,6 @@ public class Artist
         HashMap<String, Object> artistHashMap = new HashMap<>();
         artistHashMap.put("id", mId);
         artistHashMap.put("title",mTitle);
-        artistHashMap.put("no_of_tracks",mNoOfTracks);
-        artistHashMap.put("no_of_albums",mNoOfAlbums);
 
         return artistHashMap;
     }

@@ -6,9 +6,15 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class AudioFinder {
     private ContentResolver mContentResolver;
@@ -18,6 +24,7 @@ public class AudioFinder {
     private List<Genre> mGenreList = new ArrayList<>();
     private List<Playlist> mPlayLists = new ArrayList<>();
     private Random mRandom = new Random();
+    List<Integer> mIds = new ArrayList<>();
 
     public AudioFinder(ContentResolver contentResolver) {
         mContentResolver = contentResolver;
@@ -128,14 +135,81 @@ public class AudioFinder {
             mArtistList.add(
                     new Artist(
                             artistCursor.getLong(idCol),
-                            artistCursor.getString(titleCol),
-                            artistCursor.getInt(noOfTracksCol),
-                            artistCursor.getInt(noOfAlbumsCol)
+                            artistCursor.getString(titleCol)
                     )
             );
         } while (artistCursor.moveToNext());
 
         artistCursor.close();
+
+        ArrayList<ArtistNew> individualArtist = new ArrayList<>();
+
+        for(int i=0;i<mArtistList.size();i++)
+        {
+            String currentName = mArtistList.get(i).mTitle;
+            ArrayList<Long> ids = new ArrayList<>();
+            ids.add(mArtistList.get(i).mId);
+
+            if(currentName.contains("&"))
+            {
+                String[] sub = currentName.split("&");
+                for (String aSub : sub) {
+                    if (aSub.contains(",")) {
+                        String[] substring = aSub.split(",");
+                        for (String aSubstring : substring)
+                            individualArtist.add(new ArtistNew(aSubstring.trim(), ids));
+                    } else {
+                        individualArtist.add(new ArtistNew(aSub.trim(), ids));
+                    }
+                }
+            }
+            else if(currentName.contains(","))
+            {
+                String[] sub = currentName.split(",");
+                for (String aSub : sub) {
+                    if (aSub.contains(",")) {
+                        String[] substring = aSub.split(",");
+                        for (String aSubstring : substring)
+                            individualArtist.add(new ArtistNew(aSubstring.trim(), ids));
+                    } else {
+                        individualArtist.add(new ArtistNew(aSub.trim(), ids));
+                    }
+                }
+            }
+            else if(currentName.contains(" and "))
+            {
+                String[] sub = currentName.split(" and ");
+                for (String aSub : sub) {
+                    if (aSub.contains(",")) {
+                        String[] substring = aSub.split(",");
+                        for (String aSubstring : substring)
+                            individualArtist.add(new ArtistNew(aSubstring.trim(), ids));
+                    } else {
+                        individualArtist.add(new ArtistNew(aSub.trim(), ids));
+                    }
+                }
+            } else if(currentName.contains("("))
+            {
+                String[] sub = currentName.split("\\(");
+                 individualArtist.add(new ArtistNew(sub[0].trim(), ids));
+
+            } else
+            {
+                individualArtist.add(new ArtistNew(currentName, ids));
+            }
+        }
+
+        Collections.sort(individualArtist, new Comparator<ArtistNew>() {
+            @Override
+            public int compare(ArtistNew o1, ArtistNew o2) {
+                return o1.mArtistName.compareTo(o2.mArtistName);
+            }
+        });
+
+        /*for(int i=0; i<individualArtist.size();i++)
+        {
+            Log.d("App",individualArtist.get(i).mArtistName + individualArtist.get(i).mAlbumIds.size());
+        }*/
 
     }
 
@@ -242,6 +316,7 @@ public class AudioFinder {
     {
         return mPlayLists;
     }
+
 
     public void songFinder(String where, int id)
     {

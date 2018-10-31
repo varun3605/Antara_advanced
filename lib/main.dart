@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/homepage.dart';
 import 'package:flutter_app/library.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new MaterialApp(
+      theme: Default,
       debugShowCheckedModeBanner: false,
       home: new SplashScreen(),
       routes: <String, WidgetBuilder>{

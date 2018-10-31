@@ -62,9 +62,8 @@ class _albumState extends State<AlbumsList> {
               ],
             ),
             onTap: () {
-              Navigator.push(
-                  context, new MaterialPageRoute(builder: (context) {
-                    return new AlbumPage(a.id, a.title);
+              Navigator.push(context, new MaterialPageRoute(builder: (context) {
+                return new AlbumPage(a.id, a.title);
               }));
             },
           );

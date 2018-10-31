@@ -34,28 +34,49 @@ class _trackState extends State<TracksList> {
         var artFile =
             s.albumArt == null ? null : new File.fromUri(Uri.parse(s.albumArt));
         print(s);
-        return new ListTile(
-          leading: new Material(
-            child: artFile != null
-                ? Container(
-                    width: 48.0,
-                    height: 48.0,
-                    decoration: new BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                      image: new DecorationImage(
-                        image: new FileImage(artFile),
-                        fit: BoxFit.cover,
+        return new ListTileTheme(
+          contentPadding: EdgeInsets.only(
+            left: 16.0,
+          ),
+          child: ListTile(
+            leading: new Material(
+              child: artFile != null
+                  ? Container(
+                      width: 48.0,
+                      height: 48.0,
+                      decoration: new BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                        image: new DecorationImage(
+                          image: new FileImage(artFile),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                  : new Container(
+                      width: 48.0,
+                      height: 48.0,
+                      child: Center(
+                        child: new Icon(
+                          Icons.play_circle_filled,
+                          size: 48.0,
+                        ),
                       ),
                     ),
-                  )
-                : new CircleAvatar(
-                    child: new Icon(Icons.play_circle_filled),
-                  ),
-          ),
-          title: new Text(s.title),
-          trailing: new IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: null,
+            ),
+            title: new Text(
+              s.title,
+              maxLines: 1,
+              // style: Theme.of(context).textTheme.subhead,
+            ),
+            subtitle: new Text(
+              s.artist,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.subhead,
+            ),
+            trailing: new IconButton(
+              icon: const Icon(Icons.more_vert),
+              onPressed: null,
+            ),
           ),
         );
       },

@@ -47,6 +47,9 @@ class _artistState extends State<ArtistList> {
                         ),
                         textAlign: TextAlign.center,
                       ),
+                    /*  Text(
+                        a.id.toString()
+                      ),*/
                     ],
                   ),
                 ),
