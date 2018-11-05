@@ -39,6 +39,7 @@ class _trackState extends State<TracksList> {
             left: 16.0,
           ),
           child: ListTile(
+            onTap: (){},
             leading: new Material(
               child: artFile != null
                   ? Container(
@@ -66,7 +67,6 @@ class _trackState extends State<TracksList> {
             title: new Text(
               s.title,
               maxLines: 1,
-              // style: Theme.of(context).textTheme.subhead,
             ),
             subtitle: new Text(
               s.artist,

@@ -82,7 +82,7 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
           id = methodCall.argument("id");
           result.success(getSongDatafromPlaylist(id));
           break;
-          case "request_permissions":
+          case "request_permissions": //9. Requesting Permissions
               i=0;
               mResult = result;
               prev_stat = methodCall.argument("status");
@@ -228,13 +228,13 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    void chkPermission()
+    void chkPermission() //10. Checking Permissions according to code passed
     {
         if(getApplicationContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         {
             Log.i("App", "2");
             if(prev_stat == 1)
-            rqstPermissions();
+            rqstPermissions(); //11. With Code 1, Request Permissions
             if(prev_stat ==2)
                 requestPermissions();
         }
@@ -258,7 +258,7 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
             else
             {
                 Log.i("App", "5");
-                requestPermissions();
+                requestPermissions(); //12. In this.
             }
         }
         else {
@@ -270,9 +270,9 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
     {
         if(Build.VERSION.SDK_INT >=23) {
             Log.i("App", "6");
-            if(i==0) {
+            if(i==0) {//13. Requesting Permissions for the First Time
                 this.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READ_STORAGE);
-                i++;
+                i++; //15. Asked for the Permission the First Time
             }
             else
             {
@@ -290,7 +290,7 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
                 if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
                     Log.i("App", "7");
-                    mResult.success("PERMISSION_GRANTED");
+                    mResult.success("PERMISSION_GRANTED"); //14. If Permission Granted, then success.
                 }
                 else
                 {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Tablayout_library.dart';
 import 'package:flutter_app/Basic_elements/song.dart';
-import 'package:flutter_app/Data_handlers/song_data.dart';
+
 
 
 class Library extends StatefulWidget {
@@ -27,8 +27,17 @@ class _libraryState extends State<Library> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Scaffold(
-      body: new TabPage(),
+    return new Material(
+      child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Image.asset(
+            "images/ocean.jpg",
+            fit: BoxFit.cover,
+          ),
+          TabPage(),
+        ],
+      ),
     );
   }
 }

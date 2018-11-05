@@ -17,11 +17,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new MaterialApp(
-      theme: Default,
+      theme: Default, //1. Select Theme for App TODO: Make an arrangement to load theme from Shared Preferences
       debugShowCheckedModeBanner: false,
-      home: new SplashScreen(),
+      home: new SplashScreen(), //2. Current Opening Hello Page TODO: Implement Logo Animation
       routes: <String, WidgetBuilder>{
         '/HomePage': (BuildContext context) {
           return new HomePage();
@@ -43,7 +42,7 @@ class SplashState extends State<SplashScreen> {
 
   Future checkFirstTime() async {
     preferences = await SharedPreferences.getInstance();
-    bool _opened = (preferences.getBool('opened') ?? false);
+    bool _opened = (preferences.getBool('opened') ?? false); //4. If opening for First Time, then assign false; else get from Shared Preferences
 
     if (_opened) {
       startTimeSecond();
@@ -54,9 +53,8 @@ class SplashState extends State<SplashScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    checkFirstTime();
+    checkFirstTime(); //3. Checking whether the App is opening First Time
   }
 
   startTimeOne() async {
@@ -64,14 +62,14 @@ class SplashState extends State<SplashScreen> {
     return new Timer(duration, nextPage);
   }
 
-  startTimeSecond() async{
+  startTimeSecond() async{ //5. Inflate MainPage
     var duration = new Duration(seconds: 2);
     return new Timer(duration, mainPage);
   }
 
   void mainPage()
   {
-    checkPermissions();
+    checkPermissions(); //6. Check Permissions
   }
   void nextPage() {
     Navigator.of(context).pushReplacementNamed('/HomePage');
@@ -79,7 +77,7 @@ class SplashState extends State<SplashScreen> {
 
   void checkPermissions() async {
 
-    per_rqst_status = await AudioExtractor.requestPermission(1);
+    per_rqst_status = await AudioExtractor.requestPermission(1);//7. Request Permissions with code 1
     getPerstatus();
   }
 

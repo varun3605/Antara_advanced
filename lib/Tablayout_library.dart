@@ -11,7 +11,6 @@ import 'package:flutter_app/Data_handlers/genre_data.dart';
 import 'Data_handlers/playlist_data.dart';
 import 'audioPlayer.dart';
 
-
 var songs, albums, artists, genres, playlists;
 SongData songData;
 AlbumData albumData;
@@ -21,8 +20,6 @@ PlaylistData playlistData;
 bool isLoading;
 
 class TabPage extends StatefulWidget {
-  TabPage();
-
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -31,6 +28,7 @@ class TabPage extends StatefulWidget {
 }
 
 class _TabPageState extends State<TabPage> {
+
   @override
   void initState() {
     // TODO: implement initState
@@ -45,9 +43,13 @@ class _TabPageState extends State<TabPage> {
     return new DefaultTabController(
       length: 5,
       child: new Scaffold(
+        backgroundColor: Colors.transparent,
         appBar: new AppBar(
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
           title: new Text("Library"),
           bottom: new TabBar(
+            isScrollable: true,
             tabs: <Widget>[
               new Tab(text: "Tracks"),
               new Tab(text: "Albums"),
@@ -57,20 +59,22 @@ class _TabPageState extends State<TabPage> {
             ],
           ),
         ),
-        body: isLoading ? new CircularProgressIndicator() : new TabBarView(
-          children: <Widget>[
-            new TracksList(songData),
-            new AlbumsList(albumData),
-            new ArtistList(artistData),
-            new PlayList_List(playlistData),
-            new GenreList(genreData)
-          ],
-        ),
+        body: isLoading
+            ? new CircularProgressIndicator()
+            : new TabBarView(
+                children: <Widget>[
+                  new TracksList(songData),
+                  new AlbumsList(albumData),
+                  new ArtistList(artistData),
+                  new PlayList_List(playlistData),
+                  new GenreList(genreData)
+                ],
+              ),
       ),
     );
   }
 
-   void loadSongs() async {
+  void loadSongs() async {
     songs = await AudioExtractor.allSongs();
     albums = await AudioExtractor.allAlbums();
     artists = await AudioExtractor.allArtists();
@@ -81,16 +85,15 @@ class _TabPageState extends State<TabPage> {
     print(artists);
     print(genres);
     print(playlists);
-    if(!mounted)
-        return;
+    if (!mounted) return;
 
     setState(() {
-          songData = new SongData(songs);
-          albumData = new AlbumData(albums);
-          artistData = new ArtistData(artists);
-          genreData = new GenreData(genres);
-          playlistData = new PlaylistData(playlists);
-          isLoading = false;
-        });
+      songData = new SongData(songs);
+      albumData = new AlbumData(albums);
+      artistData = new ArtistData(artists);
+      genreData = new GenreData(genres);
+      playlistData = new PlaylistData(playlists);
+      isLoading = false;
+    });
   }
 }

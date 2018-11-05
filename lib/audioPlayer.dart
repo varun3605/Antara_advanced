@@ -12,7 +12,7 @@ typedef void ErrorHandler(String message);
 
 class AudioExtractor {
   static const MethodChannel _channel =
-      const MethodChannel('com.hvr.mainapp/audiofinder');
+      const MethodChannel('com.hvr.mainapp/audiofinder'); // Specifying Method Channel with name
 
   TimeHandler durnHandler;
   TimeHandler poshandler;
@@ -105,7 +105,7 @@ class AudioExtractor {
     return version;
   }
 
-  static Future<String> requestPermission(int key) async
+  static Future<String> requestPermission(int key) async//8. Invoking Method Channel for Request Permissions
   {
     final String permission_rqst_status = await _channel.invokeMethod('request_permissions', {"status" : key});
     return permission_rqst_status;
