@@ -23,9 +23,8 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class MainActivity extends FlutterActivity implements MethodChannel.MethodCallHandler {
     private static final int REQUEST_CODE_READ_STORAGE = 1;
-    private static final String CHANNEL = "com.hvr.mainapp/audiofinder";
-    private static final String CHANNEL_2 = "com.hvr.mainapp/database";
-    private MethodChannel mMethodChannel;
+    private static final String CHANNEL = "com.hvr.flutterApp/audioFinder";
+    private static final String CHANNEL_2 = "com.hvr.flutterApp/database";
     private Result mResult;
     private int prev_stat;
     int i, id;
@@ -37,8 +36,8 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
     super.onCreate(savedInstanceState);
     GeneratedPluginRegistrant.registerWith(this);
 
-      mMethodChannel = new MethodChannel(getFlutterView(), CHANNEL);
-      mMethodChannel.setMethodCallHandler(this);
+      MethodChannel methodChannel = new MethodChannel(getFlutterView(), CHANNEL);
+      methodChannel.setMethodCallHandler(this);
       if (sAudioManager == null) {
           sAudioManager = (AudioManager) getApplicationContext().getSystemService(AUDIO_SERVICE);
       }
@@ -63,24 +62,24 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
           case "getGenres":
               result.success(getGenreData());
               break;
-          case "getPlaylists":
+          case "getPlayLists":
               result.success(getPlaylistData());
               break;
-          case "getSongsfromAlbum":
+          case "getSongsFromAlbum":
               id = methodCall.argument("id");
-              result.success(getSongDatafromAlbum(id));
+              result.success(getSongDataFromAlbum(id));
               break;
-          case "getSongsfromArtist":
+          case "getSongsFromArtist":
               id = methodCall.argument("id");
-              result.success(getSongDatafromArtist(id));
+              result.success(getSongDataFromArtist(id));
               break;
-          case "getSongsfromGenre":
+          case "getSongsFromGenre":
               id = methodCall.argument("id");
-              result.success(getSongDatafromGenre(id));
+              result.success(getSongDataFromGenre(id));
               break;
-          case "getSongsfromPlaylist":
+          case "getSongsFromPlaylist":
           id = methodCall.argument("id");
-          result.success(getSongDatafromPlaylist(id));
+          result.success(getSongDataFromPlaylist(id));
           break;
           case "request_permissions": //9. Requesting Permissions
               i=0;
@@ -90,7 +89,6 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
               chkPermission();
               break;
           case "open_settings":
-              //mResult=result;
               Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
               intent.addCategory(Intent.CATEGORY_DEFAULT);
               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -163,7 +161,7 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
     ArrayList<HashMap> getPlaylistData()
     {
         AudioFinder audioFinder = new AudioFinder(getContentResolver());
-        audioFinder.findPlaylists();
+        audioFinder.findPlayLists();
         List<Playlist> playListList = audioFinder.getPlayListList();
         System.out.print(playListList);
         ArrayList<HashMap> playListHashMaps = new ArrayList<>();
@@ -175,10 +173,10 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
         return playListHashMaps;
     }
 
-    ArrayList<HashMap> getSongDatafromAlbum(int album_id)
+    ArrayList<HashMap> getSongDataFromAlbum(int album_id)
     {
         AudioFinder audioFinder = new AudioFinder(getContentResolver());
-        audioFinder.findSongsfromAlbum(album_id);
+        audioFinder.findSongsFromAlbum(album_id);
         List<Song> songList = audioFinder.getSongList();
         System.out.print(songList);
         ArrayList<HashMap> songHashMaps = new ArrayList<>();
@@ -188,10 +186,10 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
         return songHashMaps;
     }
 
-    ArrayList<HashMap> getSongDatafromArtist(int artist_id)
+    ArrayList<HashMap> getSongDataFromArtist(int artist_id)
     {
         AudioFinder audioFinder = new AudioFinder(getContentResolver());
-        audioFinder.findSongsfromArtist(artist_id);
+        audioFinder.findSongsFromArtist(artist_id);
         List<Song> songList = audioFinder.getSongList();
         System.out.print(songList);
         ArrayList<HashMap> songHashMaps = new ArrayList<>();
@@ -201,10 +199,10 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
         return songHashMaps;
     }
 
-    ArrayList<HashMap> getSongDatafromGenre(int genre_id)
+    ArrayList<HashMap> getSongDataFromGenre(int genre_id)
     {
         AudioFinder audioFinder = new AudioFinder(getContentResolver());
-        audioFinder.findSongsfromGenre(genre_id);
+        audioFinder.findSongsFromGenre(genre_id);
         List<Song> songList = audioFinder.getSongList();
         System.out.print(songList);
         ArrayList<HashMap> songHashMaps = new ArrayList<>();
@@ -214,10 +212,10 @@ public class MainActivity extends FlutterActivity implements MethodChannel.Metho
         return songHashMaps;
     }
 
-    ArrayList<HashMap> getSongDatafromPlaylist(int playlist_id)
+    ArrayList<HashMap> getSongDataFromPlaylist(int playlist_id)
     {
         AudioFinder audioFinder = new AudioFinder(getContentResolver());
-        audioFinder.findSongsfromPlaylist(playlist_id);
+        audioFinder.findSongsFromPlaylist(playlist_id);
         List<Song> songList = audioFinder.getSongList();
         System.out.print(songList);
         ArrayList<HashMap> songHashMaps = new ArrayList<>();

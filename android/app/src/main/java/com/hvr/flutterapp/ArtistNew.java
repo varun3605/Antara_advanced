@@ -6,9 +6,9 @@ import java.util.HashMap;
 public class ArtistNew
 {
     String mArtistName;
-    ArrayList<Long> mAlbumIds;
+    private ArrayList<Long> mAlbumIds;
 
-    public ArtistNew(String artistName, ArrayList<Long> albumIds) {
+    ArtistNew(String artistName, ArrayList<Long> albumIds) {
         mArtistName = artistName;
         mAlbumIds = albumIds;
     }

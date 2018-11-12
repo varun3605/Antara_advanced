@@ -3,19 +3,19 @@ import 'package:flutter_app/audioPlayer.dart';
 
 class AlbumData
 {
-  List<Album> list_album;
+  List<Album> listAlbum;
   AudioExtractor mAudioExtractor;
-  AlbumData(this.list_album)
+  AlbumData(this.listAlbum)
   {
     mAudioExtractor = new AudioExtractor();
   }
 
   List<Album> get albums{
-    return list_album;
+    return listAlbum;
   }
 
   int get length
   {
-    return list_album.length;
+    return listAlbum.length;
   }
 }

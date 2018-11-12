@@ -17,6 +17,7 @@ dependencies:
     sdk: flutter
 
   shared_preferences:
+  audioplayers:
   flutter_webview_plugin:
 
   # The following adds the Cupertino Icons font to your application.
@@ -34,9 +35,12 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   fonts:
-    - family: K2D
+    - family: list_item_title
       fonts:
-        - asset: fonts/list_item/title/K2D-Regular.ttf
+        - asset: fonts/list_item/title/K2D-Bold.ttf
+    - family: list_item_subtitle
+      fonts:
+        - asset: fonts/list_item/subtitle/K2D-Regular.ttf
 
   assets:
     - images/

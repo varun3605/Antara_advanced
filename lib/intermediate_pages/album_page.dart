@@ -10,9 +10,9 @@ bool isLoading;
 SongData songData;
 
 class AlbumPage extends StatefulWidget {
-  AlbumPage(int id_album, String album_title) {
-    id = id_album;
-    title = album_title;
+  AlbumPage(int albumId, String albumTitle) {
+    id = albumId;
+    title = albumTitle;
   }
   @override
   _AlbumPageState createState() => _AlbumPageState();
@@ -33,7 +33,9 @@ class _AlbumPageState extends State<AlbumPage> {
       appBar: new AppBar(
         title: new Text(title),
       ),
-      body: isLoading ? new CircularProgressIndicator() : ListViewMaker(songData),
+      body: isLoading
+          ? new CircularProgressIndicator()
+          : ListViewMaker(songData),
     );
   }
 

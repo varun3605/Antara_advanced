@@ -11,11 +11,11 @@ class ArtistList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new _artistState();
+    return new _ArtistState();
   }
 }
 
-class _artistState extends State<ArtistList> {
+class _ArtistState extends State<ArtistList> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,7 +42,6 @@ class _artistState extends State<ArtistList> {
                       Text(
                         a.title,
                         style: TextStyle(
-                          color: Colors.white,
                           fontSize: 20.0,
                         ),
                         textAlign: TextAlign.center,

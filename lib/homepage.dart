@@ -3,7 +3,6 @@ import 'permission_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage();
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +12,8 @@ class HomePage extends StatelessWidget {
         child: RaisedButton(
           child: Text('Welcome to Antara'),
           onPressed: () async {
-            SharedPreferences preferences = await SharedPreferences.getInstance();
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
             preferences.setBool('opened', true);
             Navigator.pushReplacement(
               context,

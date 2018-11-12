@@ -2,12 +2,12 @@ package com.hvr.flutterapp;
 
 import java.util.HashMap;
 
-public class Genre
+class Genre
 {
-    long mId;
-    String mTitle;
+    private long mId;
+    private String mTitle;
 
-    public Genre(long id, String title) {
+    Genre(long id, String title) {
         mId = id;
         mTitle = title;
     }

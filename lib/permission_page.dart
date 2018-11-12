@@ -3,8 +3,8 @@ import 'library.dart';
 import 'audioPlayer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String per_rqst_status;
-bool per_denied_permanently;
+String perRequestStatus;
+bool perDeniedPermanently;
 SharedPreferences preferences;
 
 class PermissionPage extends StatefulWidget {
@@ -13,22 +13,24 @@ class PermissionPage extends StatefulWidget {
   }
 }
 
-class _PermissionState extends State<PermissionPage> {
-  final GlobalKey<ScaffoldState> mScaffoldstate = new GlobalKey<ScaffoldState>();
+class _PermissionState extends State<PermissionPage>
+{
+
+  final GlobalKey<ScaffoldState> mScaffoldState = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    chkPerstatus();
+    chkPerStatus();
   }
 
-  void chkPerstatus() async{
+  void chkPerStatus() async{
     preferences = await SharedPreferences.getInstance();
-    per_denied_permanently = (preferences.getBool('per_denied_perm') ?? false);
-    if (per_denied_permanently) {
-      per_rqst_status = "PERMISSION_DENIED_PERMANENTLY";
-      getPerstatus();
+    perDeniedPermanently = (preferences.getBool('per_denied_perm') ?? false);
+    if (perDeniedPermanently) {
+      perRequestStatus = "PERMISSION_DENIED_PERMANENTLY";
+      getPerStatus();
     }
     else {
       checkPermissions();
@@ -37,24 +39,13 @@ class _PermissionState extends State<PermissionPage> {
 
   void checkPermissions() async {
 
-    per_rqst_status = await AudioExtractor.requestPermission(1);
-    getPerstatus();
+    perRequestStatus = await AudioExtractor.requestPermission(1);
+    getPerStatus();
   }
 
-  void check_per_denied() async
+  void getPerStatus()
   {
-    per_rqst_status = await AudioExtractor.requestPermission(2);
-    getPerstatus();
-  }
-
-  void open_settings() async
-  {
-    per_rqst_status = await AudioExtractor.openSettings();
-  }
-
-  void getPerstatus()
-  {
-    switch (per_rqst_status) {
+    switch (perRequestStatus) {
       case "PERMISSION_GRANTED":
         print("Permission is granted");
         Navigator.of(context)
@@ -64,32 +55,44 @@ class _PermissionState extends State<PermissionPage> {
         break;
       case "PERMISSION_DENIED":
         print("Permission is Denied");
-        final snackbar = SnackBar(
+        final snackBar = SnackBar(
           content: Text("Permission necessary to access songs!!"),
-          action: SnackBarAction(label: 'Enable', onPressed: check_per_denied),
+          action: SnackBarAction(label: 'Enable', onPressed: checkPerDenied),
           duration: new Duration(seconds: 10),
         );
-        mScaffoldstate.currentState.showSnackBar(snackbar);
+        mScaffoldState.currentState.showSnackBar(snackBar);
         break;
       case "PERMISSION_DENIED_PERMANENTLY":
         print("Permission denied permanently");
         preferences.setBool('per_denied_perm', true);
-        final snackbar = SnackBar(
+        final snackBar = SnackBar(
           content: Text("Please grant permission from settings"),
-          action: SnackBarAction(label: 'Open', onPressed: open_settings),
+          action: SnackBarAction(label: 'Open', onPressed: openSettings),
           duration: new Duration(seconds: 10),
         );
-        mScaffoldstate.currentState.showSnackBar(snackbar);
+        mScaffoldState.currentState.showSnackBar(snackBar);
         break;
       default:
         print("A error occurred");
     }
   }
+
+  void checkPerDenied() async
+  {
+    perRequestStatus = await AudioExtractor.requestPermission(2);
+    getPerStatus();
+  }
+
+  void openSettings() async
+  {
+    perRequestStatus = await AudioExtractor.openSettings();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
-      key: mScaffoldstate,
+      key: mScaffoldState,
       body: Center(
         child: Text('Permissions'),
       ),

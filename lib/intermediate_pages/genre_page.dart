@@ -11,9 +11,9 @@ SongData songData;
 
 
 class GenrePage extends StatefulWidget {
-  GenrePage(int id_genre, String genre_name) {
-    id = id_genre;
-    title = genre_name;
+  GenrePage(int genreId, String genreName) {
+    id = genreId;
+    title = genreName;
   }
   @override
   _GenrePageState createState() => _GenrePageState();

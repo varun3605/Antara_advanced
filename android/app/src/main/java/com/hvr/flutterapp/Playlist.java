@@ -2,14 +2,14 @@ package com.hvr.flutterapp;
 
 import java.util.HashMap;
 
-public class Playlist
+class Playlist
 {
-    long mId;
-    String mTitle;
-    long mDateAdded;
-    long mDateModified;
+    private long mId;
+    private String mTitle;
+    private long mDateAdded;
+    private long mDateModified;
 
-    public Playlist(long id, String title, long dateAdded, long dateModified) {
+    Playlist(long id, String title, long dateAdded, long dateModified) {
         mId = id;
         mTitle = title;
         mDateAdded = dateAdded;

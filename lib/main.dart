@@ -6,8 +6,8 @@ import 'package:flutter_app/library.dart';
 import 'audioPlayer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String per_rqst_status;
-bool per_denied_permanently;
+String perRequestStatus;
+bool perDeniedPermanently;
 SharedPreferences preferences;
 
 void main() {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      theme: Default, //1. Select Theme for App TODO: Make an arrangement to load theme from Shared Preferences
+      theme: defaultTheme, //1. Select Theme for App TODO: Make an arrangement to load theme from Shared Preferences
       debugShowCheckedModeBanner: false,
       home: new SplashScreen(), //2. Current Opening Hello Page TODO: Implement Logo Animation
       routes: <String, WidgetBuilder>{
@@ -38,7 +38,13 @@ class SplashScreen extends StatefulWidget {
 
 class SplashState extends State<SplashScreen> {
 
-  final GlobalKey<ScaffoldState> mScaffoldstate = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> mScaffoldState = new GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    checkFirstTime(); //3. Checking whether the App is opening First Time
+  }
 
   Future checkFirstTime() async {
     preferences = await SharedPreferences.getInstance();
@@ -51,15 +57,13 @@ class SplashState extends State<SplashScreen> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    checkFirstTime(); //3. Checking whether the App is opening First Time
-  }
-
   startTimeOne() async {
     var duration = new Duration(seconds: 2);
     return new Timer(duration, nextPage);
+  }
+
+  void nextPage() {
+    Navigator.of(context).pushReplacementNamed('/HomePage');
   }
 
   startTimeSecond() async{ //5. Inflate MainPage
@@ -71,29 +75,16 @@ class SplashState extends State<SplashScreen> {
   {
     checkPermissions(); //6. Check Permissions
   }
-  void nextPage() {
-    Navigator.of(context).pushReplacementNamed('/HomePage');
-  }
+
 
   void checkPermissions() async {
 
-    per_rqst_status = await AudioExtractor.requestPermission(1);//7. Request Permissions with code 1
-    getPerstatus();
+    perRequestStatus = await AudioExtractor.requestPermission(1);//7. Request Permissions with code 1
+    getPerStatus();
   }
 
-  void check_per_denied() async
-  {
-    per_rqst_status = await AudioExtractor.requestPermission(2);
-    getPerstatus();
-  }
-
-  void open_settings() async
-  {
-    per_rqst_status = await AudioExtractor.openSettings();
-  }
-
-  void getPerstatus() async {
-    switch (per_rqst_status) {
+  void getPerStatus() async {
+    switch (perRequestStatus) {
       case "PERMISSION_GRANTED":
         print("Permission is granted");
         Navigator.of(context)
@@ -103,33 +94,44 @@ class SplashState extends State<SplashScreen> {
         break;
       case "PERMISSION_DENIED":
         print("Permission is Denied");
-        final snackbar = SnackBar(
+        final snackBar = SnackBar(
           content: Text("Permission necessary to access songs!!"),
-          action: SnackBarAction(label: 'Enable', onPressed: check_per_denied),
+          action: SnackBarAction(label: 'Enable', onPressed: checkPerDenied),
           duration: new Duration(seconds: 10),
         );
-        mScaffoldstate.currentState.showSnackBar(snackbar);
+        mScaffoldState.currentState.showSnackBar(snackBar);
         break;
       case "PERMISSION_DENIED_PERMANENTLY":
         print("Permission denied permanently");
         preferences.setBool('per_denied_perm', true);
-        final snackbar = SnackBar(
+        final snackBar = SnackBar(
           content: Text("Please grant permission from settings"),
-          action: SnackBarAction(label: 'Open', onPressed: open_settings),
+          action: SnackBarAction(label: 'Open', onPressed: openSettings),
           duration: new Duration(seconds: 10),
         );
-        mScaffoldstate.currentState.showSnackBar(snackbar);
+        mScaffoldState.currentState.showSnackBar(snackBar);
         break;
       default:
         print("A error occurred");
     }
   }
 
+  void checkPerDenied() async
+  {
+    perRequestStatus = await AudioExtractor.requestPermission(2);
+    getPerStatus();
+  }
+
+  void openSettings() async
+  {
+    perRequestStatus = await AudioExtractor.openSettings();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
-      key: mScaffoldstate,
+      key: mScaffoldState,
       body: Center(
         child: Text('Hello'),
       ),

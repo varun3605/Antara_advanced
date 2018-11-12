@@ -11,9 +11,9 @@ SongData songData;
 
 
 class ArtistPage extends StatefulWidget {
-  ArtistPage(int id_artist, String artist_name) {
-    id = id_artist;
-    title = artist_name;
+  ArtistPage(int artistId, String artistName) {
+    id = artistId;
+    title = artistName;
   }
   @override
   _ArtistPageState createState() => _ArtistPageState();

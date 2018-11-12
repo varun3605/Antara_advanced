@@ -6,17 +6,17 @@ import android.provider.MediaStore;
 
 import java.util.HashMap;
 
-public class Album
+class Album
 {
-    long mId;
-    String mTitle;
-    int mNumSongs;
-    String mArtist;
-    int mFirstYear;
-    int mLastYear;
-    String mAlbumArt;
+    private long mId;
+    private String mTitle;
+    private int mNumSongs;
+    private String mArtist;
+    private int mFirstYear;
+    private int mLastYear;
+    private String mAlbumArt;
 
-    public Album(long id, String title, int numSongs, String artist, int firstYear, int lastYear, ContentResolver contentResolver) {
+    Album(long id, String title, int numSongs, String artist, int firstYear, int lastYear, ContentResolver contentResolver) {
         mId = id;
         mTitle = title;
         mNumSongs = numSongs;
@@ -26,34 +26,7 @@ public class Album
         mAlbumArt = getAlbumArt(contentResolver);
     }
 
-    public long getId() {
-        return mId;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-
-    public int getNumSongs() {
-        return mNumSongs;
-    }
-
-    public String getArtist() {
-        return mArtist;
-    }
-
-    public int getFirstYear() {
-        return mFirstYear;
-    }
-
-    public int getLastYear() {
-        return mLastYear;
-    }
-
-
-
-    public String getAlbumArt(ContentResolver contentResolver) {
+    private String getAlbumArt(ContentResolver contentResolver) {
         String path = " ";
 
         Cursor albumCursor = contentResolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART}, MediaStore.Audio.Albums._ID + "=?", new String[]{String.valueOf(mId)}, null);

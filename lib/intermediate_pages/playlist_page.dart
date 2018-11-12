@@ -11,9 +11,9 @@ SongData songData;
 
 
 class PlaylistPage extends StatefulWidget {
-  PlaylistPage(int id_playlist, String playlist_name) {
-    id = id_playlist;
-    title = playlist_name;
+  PlaylistPage(int playlistId, String playlistName) {
+    id = playlistId;
+    title = playlistName;
   }
   @override
   _PlaylistPageState createState() => _PlaylistPageState();

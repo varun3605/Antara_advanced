@@ -4,17 +4,12 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class AudioFinder {
     private ContentResolver mContentResolver;
@@ -26,11 +21,11 @@ public class AudioFinder {
     private Random mRandom = new Random();
     List<Integer> mIds = new ArrayList<>();
 
-    public AudioFinder(ContentResolver contentResolver) {
+    AudioFinder(ContentResolver contentResolver) {
         mContentResolver = contentResolver;
     }
 
-    public void findSongs() {
+    void findSongs() {
         Uri songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
         String sortOrder = MediaStore.Audio.Media.DEFAULT_SORT_ORDER + " ASC";
@@ -77,7 +72,7 @@ public class AudioFinder {
         songListCursor.close();
     }
 
-    public void findAlbums() {
+    void findAlbums() {
         Uri albumUri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
 
         String sortOrder = MediaStore.Audio.Albums.DEFAULT_SORT_ORDER + " ASC";
@@ -113,7 +108,7 @@ public class AudioFinder {
         albumListCursor.close();
     }
 
-    public void findArtists() {
+    void findArtists() {
         Uri artistUri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
 
         String sortOrder = MediaStore.Audio.Artists.DEFAULT_SORT_ORDER;
@@ -213,7 +208,7 @@ public class AudioFinder {
 
     }
 
-    public void findGenres()
+    void findGenres()
     {
         Uri genreUri = MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI;
 
@@ -238,7 +233,7 @@ public class AudioFinder {
 
     }
 
-    public void findPlaylists()
+    void findPlayLists()
     {
         Uri playListUri = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
 
@@ -264,28 +259,28 @@ public class AudioFinder {
         playListCursor.close();
     }
 
-    public void findSongsfromAlbum(int id)
+    void findSongsFromAlbum(int id)
     {
         String selection = MediaStore.Audio.Media.ALBUM_ID + "=?";
         songFinder(selection,id);
     }
 
-    public void findSongsfromArtist(int id)
+    void findSongsFromArtist(int id)
     {
         String selection = MediaStore.Audio.Media.ARTIST_ID + "=?";
         songFinder(selection,id);
     }
 
-    public void findSongsfromGenre(int id)
+    void findSongsFromGenre(int id)
     {
         Uri genreUri = MediaStore.Audio.Genres.Members.getContentUri("external", id);
-        songFinderforGenreUri(genreUri);
+        songFinderForGenreUri(genreUri);
     }
 
-    public void findSongsfromPlaylist(int id)
+    void findSongsFromPlaylist(int id)
     {
         Uri playlistUri = MediaStore.Audio.Playlists.Members.getContentUri("external", id);
-        songFinderforPlaylistUri(playlistUri);
+        songFinderForPlaylistUri(playlistUri);
     }
 
     public Song RandomSong() {
@@ -294,31 +289,31 @@ public class AudioFinder {
         return mSongList.get(mRandom.nextInt(mSongList.size()));
     }
 
-    public List<Song> getSongList() {
+    List<Song> getSongList() {
         return mSongList;
     }
 
-    public List<Album> getAlbumList() {
+    List<Album> getAlbumList() {
         return mAlbumList;
     }
 
-    public List<Artist> getArtistList()
+    List<Artist> getArtistList()
     {
         return mArtistList;
     }
 
-    public List<Genre> getGenreList()
+    List<Genre> getGenreList()
     {
         return mGenreList;
     }
 
-    public List<Playlist> getPlayListList()
+    List<Playlist> getPlayListList()
     {
         return mPlayLists;
     }
 
 
-    public void songFinder(String where, int id)
+    private void songFinder(String where, int id)
     {
         Uri songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
@@ -370,7 +365,7 @@ public class AudioFinder {
         songListCursor.close();
     }
 
-    public void songFinderforGenreUri(Uri genreUri)
+    private void songFinderForGenreUri(Uri genreUri)
     {
         String sortOrder = MediaStore.Audio.Media.DEFAULT_SORT_ORDER + " ASC";
 
@@ -418,7 +413,7 @@ public class AudioFinder {
         songListCursor.close();
     }
 
-    public void songFinderforPlaylistUri(Uri playlistUri)
+    private void songFinderForPlaylistUri(Uri playlistUri)
     {
         String sortOrder = MediaStore.Audio.Media.DEFAULT_SORT_ORDER + " ASC";
 

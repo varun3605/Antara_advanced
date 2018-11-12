@@ -7,26 +7,26 @@ import android.provider.MediaStore;
 
 import java.util.HashMap;
 
-public class Song
+class Song
 {
 
-    long mId;
-    String mArtist;
-    String mTitle;
-    String mAlbum;
-    long mAlbumId;
-    long mDuration;
-    String mUri;
-    String mAlbumart;
-    long mSize;
-    long mDateModified;
-    String mType;
-    int mYear;
-    String mComposer;
-    int mTrack;
+    private long mId;
+    private String mArtist;
+    private String mTitle;
+    private String mAlbum;
+    private long mAlbumId;
+    private long mDuration;
+    private String mUri;
+    private String mAlbumArt;
+    private long mSize;
+    private long mDateModified;
+    private String mType;
+    private int mYear;
+    private String mComposer;
+    private int mTrack;
 
 
-    public Song(long id, String artist, String title, String album, long albumId, long duration, long size, long dateModified, String type, int year, String composer, int track, ContentResolver contentResolver) {
+    Song(long id, String artist, String title, String album, long albumId, long duration, long size, long dateModified, String type, int year, String composer, int track, ContentResolver contentResolver) {
         mId = id;
         mArtist = artist;
         mTitle = title;
@@ -40,58 +40,10 @@ public class Song
         mComposer = composer;
         mTrack = track;
         mUri = getUri(contentResolver);
-        mAlbumart = getAlbumart(contentResolver);
+        mAlbumArt = getAlbumArt(contentResolver);
     }
 
-    public long getId() {
-        return mId;
-    }
-
-    public String getArtist() {
-        return mArtist;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public String getAlbum() {
-        return mAlbum;
-    }
-
-    public long getAlbumId() {
-        return mAlbumId;
-    }
-
-    public long getDuration() {
-        return mDuration;
-    }
-
-    public long getSize() {
-        return mSize;
-    }
-
-    public long getDateModified() {
-        return mDateModified;
-    }
-
-    public String getType() {
-        return mType;
-    }
-
-    public int getYear() {
-        return mYear;
-    }
-
-    public String getComposer() {
-        return mComposer;
-    }
-
-    public int getTrack() {
-        return mTrack;
-    }
-
-    public String getUri(ContentResolver contentResolver) {
+    private String getUri(ContentResolver contentResolver) {
 
         Uri contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projection = new String[]{MediaStore.Audio.Media._ID, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID};
@@ -107,7 +59,7 @@ public class Song
         return mUri;
     }
 
-    public String getAlbumart(ContentResolver contentResolver) {
+    private String getAlbumArt(ContentResolver contentResolver) {
         String path = " ";
 
         Cursor albumCursor = contentResolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART}, MediaStore.Audio.Albums._ID + "=?", new String[]{String.valueOf(mAlbumId)}, null);
@@ -128,7 +80,7 @@ public class Song
         songHashMap.put("albumId", mAlbumId);
         songHashMap.put("duration", mDuration);
         songHashMap.put("uri", mUri);
-        songHashMap.put("albumArt", mAlbumart);
+        songHashMap.put("albumArt", mAlbumArt);
         songHashMap.put("size",mSize);
         songHashMap.put("date_modified",mDateModified);
         songHashMap.put("composer",mComposer);

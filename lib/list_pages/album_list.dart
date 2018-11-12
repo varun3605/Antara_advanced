@@ -12,20 +12,20 @@ class AlbumsList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new _albumState();
+    return new _AlbumState();
   }
 }
 
-class _albumState extends State<AlbumsList> {
+class _AlbumState extends State<AlbumsList> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new GridView.builder(
-        itemCount: albumData.list_album.length,
+        itemCount: albumData.listAlbum.length,
         gridDelegate:
             new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (context, int i) {
-          var a = albumData.list_album[i];
+          var a = albumData.listAlbum[i];
 
           var artFile = a.albumArt == null
               ? null
@@ -51,7 +51,6 @@ class _albumState extends State<AlbumsList> {
                       Text(
                         a.title,
                         style: TextStyle(
-                          color: Colors.white,
                           fontSize: 20.0,
                         ),
                         textAlign: TextAlign.center,
@@ -63,7 +62,7 @@ class _albumState extends State<AlbumsList> {
             ),
             onTap: () {
               Navigator.push(context, new MaterialPageRoute(builder: (context) {
-                return new AlbumPage(a.id, a.title);
+                return AlbumPage(a.id, a.title);
               }));
             },
           );
