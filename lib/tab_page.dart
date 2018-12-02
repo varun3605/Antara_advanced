@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Basic_elements/song.dart';
+import 'package:flutter_app/custom_navigator.dart';
+import 'Basic_elements/album.dart';
 import 'package:flutter_app/drawer/menu_controller.dart';
 import 'package:flutter_app/library.dart';
 import 'dart:io';
@@ -8,6 +10,10 @@ import 'package:flutter_app/list_pages/artist_list.dart';
 import 'package:flutter_app/list_pages/genre_list.dart';
 import 'package:flutter_app/list_pages/playlist_list.dart';
 import 'package:flutter_app/list_pages/track_list.dart';
+import 'intermediate_pages/album_page.dart';
+import 'package:flutter_app/intermediate_pages/artist_page.dart';
+import 'intermediate_pages/playlist_page.dart';
+import 'intermediate_pages/genre_page.dart';
 import 'package:flutter_app/Data_handlers/song_data.dart';
 import 'package:flutter_app/Data_handlers/album_data.dart';
 import 'package:flutter_app/Data_handlers/artist_data.dart';
@@ -17,14 +23,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'audioPlayer.dart';
 
 Song song;
-typedef songCallBack = void Function(Song);
 var songs, albums, artists, genres, playLists, artFile;
 SongData songData;
 AlbumData albumData;
 ArtistData artistData;
 GenreData genreData;
 PlaylistData playlistData;
-String songTitle, albumArt, songArtist;
+String songTitle, albumArt, songArtist, whereTapped;
 bool isTapped, isPlaying;
 SharedPreferences preferences;
 IconData icon;
@@ -44,8 +49,8 @@ class _TabPageState extends State<TabPage> {
   @override
   void initState() {
     isTapped = false;
-    if(widget.isLoading)
-      loadSongs();
+    print("in here");
+    if (widget.isLoading) loadSongs();
     getTapState();
     super.initState();
   }
@@ -68,7 +73,7 @@ class _TabPageState extends State<TabPage> {
     });
   }
 
-  loadSongs() async {
+  loadSongs() async  {
     songs = await AudioExtractor.allSongs();
     albums = await AudioExtractor.allAlbums();
     artists = await AudioExtractor.allArtists();
@@ -91,8 +96,18 @@ class _TabPageState extends State<TabPage> {
     });
   }
 
+  int currentIndex = 1;
+
+  Map<int, GlobalKey<NavigatorState>> navigatorKeys = {
+    1: GlobalKey<NavigatorState>(),
+    2: GlobalKey<NavigatorState>(),
+    3: GlobalKey<NavigatorState>(),
+  };
+
   @override
   Widget build(BuildContext context) {
+
+    print(currentIndex);
     return ScaffoldMenuController(
         builder: (BuildContext context, MenuController menuController) {
       return Material(
@@ -163,45 +178,58 @@ class _TabPageState extends State<TabPage> {
 
   tabPage(MenuController menuController) {
     return DefaultTabController(
-      length: 5,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: appbar(menuController),
-        body: widget.isLoading
-            ? new Center(
-                child: CircularProgressIndicator(),
-              )
-            : new TabBarView(
-                children: <Widget>[
-                  new TracksList(
-                    songData,
-                    callback: (Song song) {
-                      setState(() {
-                        songTitle = song.title;
-                        songArtist = song.artist;
-                        artFile = song.albumArt == null
-                            ? null
-                            : new File.fromUri(Uri.parse(song.albumArt));
-                        preferences.setBool('tap_state', true);
-                        preferences.setString('song_title_stored', songTitle);
-                        preferences.setString(
-                            'album_art_stored', song.albumArt);
-                        preferences.setString('song_artist_stored', songArtist);
-                        isTapped = true;
-                        isPlaying = true;
-                        isPlaying
-                            ? icon = Icons.pause
-                            : icon = Icons.play_arrow;
-                      });
-                    },
+        length: 5,
+        child: WillPopScope(
+          onWillPop: ()async => !await navigatorKeys[currentIndex].currentState.maybePop(),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: appbar(menuController),
+            body: widget.isLoading
+                ? new Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : new TabBarView(
+                    children: <Widget>[
+                      new TracksList(
+                        songData,
+                        callback: (Song song) {
+                          updateController(song);
+                        },
+                      ),
+                      CustomNavigator(
+                        navigatorKey: navigatorKeys[1],
+                        index: 1,
+                        currentTabData: albumData,
+                        returnIndex: (index)
+                        {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                        },
+                        controllerData: (song){
+                          updateController(song);
+                        },
+                      ),
+                      CustomNavigator(
+                        navigatorKey: navigatorKeys[2],
+                        index: 2,
+                        currentTabData: artistData,
+                        returnIndex: (index)
+                        {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                        },
+                        controllerData: (song){
+                          updateController(song);
+                        },
+                      ),
+                      new PlayListList(playlistData),
+                      new GenreList(genreData)
+                    ],
                   ),
-                  new AlbumsList(albumData),
-                  new ArtistList(artistData),
-                  new PlayListList(playlistData),
-                  new GenreList(genreData)
-                ],
-              ),
-      ),
+          ),
+        ),
     );
   }
 
@@ -269,5 +297,27 @@ class _TabPageState extends State<TabPage> {
         ),
       ),
     );
+  }
+
+  updateController(song)
+  {
+    setState(() {
+      songTitle = song.title;
+      songArtist = song.artist;
+      artFile = song.albumArt == null
+          ? null
+          : new File.fromUri(Uri.parse(song.albumArt));
+      preferences.setBool('tap_state', true);
+      preferences.setString('song_title_stored', songTitle);
+      preferences.setString(
+          'album_art_stored', song.albumArt);
+      preferences.setString(
+          'song_artist_stored', songArtist);
+      isTapped = true;
+      isPlaying = true;
+      isPlaying
+          ? icon = Icons.pause
+          : icon = Icons.play_arrow;
+    });
   }
 }

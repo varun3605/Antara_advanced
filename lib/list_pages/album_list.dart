@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Data_handlers/album_data.dart';
 import 'package:flutter_app/intermediate_pages/album_page.dart';
+import 'package:flutter_app/Basic_elements/album.dart';
 import 'dart:io';
 
-AlbumData albumData;
+typedef albumCallBack = void Function(Album);
 
 class AlbumsList extends StatefulWidget {
-  AlbumsList(AlbumData albumDetail) {
-    albumData = albumDetail;
-  }
+
+  final albumCallBack onItemSelect;
+  final AlbumData albumData;
+  AlbumsList({this.albumData, this.onItemSelect});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -21,11 +24,11 @@ class _AlbumState extends State<AlbumsList> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new GridView.builder(
-        itemCount: albumData.listAlbum.length,
+        itemCount: widget.albumData.listAlbum.length,
         gridDelegate:
             new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (context, int i) {
-          var a = albumData.listAlbum[i];
+          var a = widget.albumData.listAlbum[i];
 
           var artFile = a.albumArt == null
               ? null
@@ -61,9 +64,7 @@ class _AlbumState extends State<AlbumsList> {
               ],
             ),
             onTap: () {
-              Navigator.push(context, new MaterialPageRoute(builder: (context) {
-                return AlbumPage(a.id, a.title);
-              }));
+              widget.onItemSelect(a);
             },
           );
         });

@@ -178,7 +178,9 @@ class ScaffoldMenuControllerState extends State<ScaffoldMenuController> {
   }
 
   _onMenuControllerChange() {
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override

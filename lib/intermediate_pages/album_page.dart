@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Basic_elements/song.dart';
 import 'package:flutter_app/Data_handlers/song_data.dart';
 import 'package:flutter_app/audioPlayer.dart';
 import 'package:flutter_app/lisviewmaker.dart';
@@ -8,9 +9,12 @@ String title;
 var songs;
 bool isLoading;
 SongData songData;
+typedef songCallBack = void Function(Song);
 
 class AlbumPage extends StatefulWidget {
-  AlbumPage(int albumId, String albumTitle) {
+  final songCallBack onSelectedSong;
+
+  AlbumPage(int albumId, String albumTitle, {this.onSelectedSong}) {
     id = albumId;
     title = albumTitle;
   }
@@ -30,12 +34,15 @@ class _AlbumPageState extends State<AlbumPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(title),
-      ),
+      backgroundColor: Colors.transparent,
       body: isLoading
           ? new CircularProgressIndicator()
-          : ListViewMaker(songData),
+          : ListViewMaker(
+              songData,
+              selectedSong: (song) {
+                widget.onSelectedSong(song);
+              },
+            ),
     );
   }
 
